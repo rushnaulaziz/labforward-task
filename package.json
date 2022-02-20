@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/rushnaulaziz/labforward-task/issues"
   },
-  "homepage": "https://github.com/rushnaulaziz/labforward-task#readme"
+  "homepage": "https://github.com/rushnaulaziz/labforward-task#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
 }
