@@ -1,24 +1,31 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
 
-function App() {
-  const [data, setData] = React.useState(null);
+import Flow from "./flowchart";
+import styled from "styled-components";
+import { Container, Row, Col } from "react-bootstrap";
 
-  React.useEffect(() => {
-    fetch("/api")
-      .then((res) => res.json())
-      .then((data) => setData(data.message));
-  }, []);
+const ContainerDiv = styled(Container)`
+  font-family: sans-serif;
+  text-align: center;
+`;
 
+const FlowArea = styled(Col)`
+  width: 100%;
+  height: 85vh;
+`;
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>{!data ? "Loading..." : data}</p>
-      </header>
-    </div>
+    <ContainerDiv fluid>
+      <Row>
+        <Col>
+          <h1>Routine Pipette Check and Calibration</h1>
+        </Col>
+      </Row>
+      <Row>
+        <FlowArea>
+          <Flow />
+        </FlowArea>
+      </Row>
+    </ContainerDiv>
   );
 }
-
-export default App;
