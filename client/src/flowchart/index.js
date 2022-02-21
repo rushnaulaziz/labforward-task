@@ -10,7 +10,7 @@ import ReactFlow, {
   updateEdge
 } from "react-flow-renderer";
 
-import initialElements from "./initial-elements";
+import initialElements from "./flow-data";
 
 const onLoad = (reactFlowInstance) => {
   console.log("flow loaded:", reactFlowInstance);
