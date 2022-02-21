@@ -53,7 +53,13 @@ const EditableCell = ({
     const [value, setValue] = React.useState(initialValue);
 
     const onChange = (e) => {
-        setValue(e.target.value);
+        if (!isNaN(e.target.value)) {
+            setValue(e.target.value);
+        }
+        else {
+            e.target.value = 0
+        }
+
     };
 
     // We'll only update the external data when the input is blurred
@@ -66,7 +72,7 @@ const EditableCell = ({
         setValue(initialValue);
     }, [initialValue]);
 
-    return <input value={value} onChange={onChange} onBlur={onBlur} />;
+    return <input value={value} onChange={onChange} onBlur={onBlur} pattern="[0-9]*" inputMode="numeric" />;
 };
 
 // Set our editable cell renderer as the default Cell renderer
@@ -74,8 +80,8 @@ const defaultColumn = {
     Cell: EditableCell
 };
 
-// Be sure to pass our updateMyData and the skipPageReset option
-function Table({ columns, data, updateMyData, skipPageReset }) {
+// Be sure to pass our updateMyData 
+function Table({ columns, data, updateMyData }) {
     // For this example, we're using pagination to illustrate how to stop
     // the current page from resetting when our data changes
     // Otherwise, nothing is different here.
@@ -90,8 +96,7 @@ function Table({ columns, data, updateMyData, skipPageReset }) {
             columns,
             data,
             defaultColumn,
-            // use the skipPageReset option to disable page resetting temporarily
-            autoResetPage: !skipPageReset,
+         
             // updateMyData isn't part of the API, but
             // anything we put into these options will
             // automatically be available on the instance.
@@ -134,7 +139,7 @@ function Table({ columns, data, updateMyData, skipPageReset }) {
     );
 }
 
-function ObservationTable() {
+function ObservationTable(prop) {
     const columns = React.useMemo(
         () => [
             {
@@ -179,19 +184,12 @@ function ObservationTable() {
             "testVolume": 0
         }]
     });
-    console.log(data);
-    const [originalData] = React.useState(data);
-    const [skipPageReset, setSkipPageReset] = React.useState(false);
-
-    // We need to keep the table from resetting the pageIndex when we
-    // Update data. So we can keep track of that flag with a ref.
 
     // When our cell renderer calls updateMyData, we'll use
     // the rowIndex, columnId and new value to update the
     // original data
     const updateMyData = (rowIndex, columnId, value) => {
         // We also turn on the flag to not reset the page
-        setSkipPageReset(true);
         setData((old) =>
             old.map((row, index) => {
                 if (index === rowIndex) {
@@ -205,16 +203,10 @@ function ObservationTable() {
         );
     };
 
-    // After data chagnes, we turn the flag back off
-    // so that if data actually changes when we're not
-    // editing it, the page is reset
-    React.useEffect(() => {
-        setSkipPageReset(false);
-    }, [data]);
+   
 
     // Let's add a data resetter/randomizer to help
     // illustrate that flow...
-    const resetData = () => setData(originalData);
 
     return (
         <Styles>
@@ -222,7 +214,7 @@ function ObservationTable() {
                 columns={columns}
                 data={data}
                 updateMyData={updateMyData}
-                skipPageReset={skipPageReset}
+               
             />
         </Styles>
     );
