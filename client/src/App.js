@@ -2,6 +2,7 @@
 import Flow from "./flowchart";
 import styled from "styled-components";
 import { Container, Row, Col } from "react-bootstrap";
+import ObservationTable from "./observation-data/observation-table";
 
 const ContainerDiv = styled(Container)`
   font-family: sans-serif;
@@ -10,7 +11,7 @@ const ContainerDiv = styled(Container)`
 
 const FlowArea = styled(Col)`
   width: 100%;
-  height: 85vh;
+  height: 65vh;
 `;
 
 export default function App() {
@@ -26,6 +27,8 @@ export default function App() {
           <Flow />
         </FlowArea>
       </Row>
+      <ObservationTable/>
+
     </ContainerDiv>
   );
 }
