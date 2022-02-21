@@ -7,16 +7,24 @@ import ObservationSummary from "./observation-summary/observation-summary";
 
 const ContainerDiv = styled(Container)`
   font-family: sans-serif;
-  text-align: center;
 `;
-
+const Button = styled.button`
+  background-color: black;
+  color: white;
+  font-size: 20px;
+  padding: 10px 60px;
+  border-radius: 5px;
+  margin: 10px 0px;
+  cursor: pointer;
+`;
 const FlowArea = styled(Col)`
   width: 100%;
   height: 55vh;
 `;
 
 export default function App() {
-  const [data, setData] = useState({"observation":[], "summary": []});
+  const [data, setData] = useState({ observation: [], summary: [] });
+  const [message, setMesssage] = useState("")
   const fetchData = () => {
     fetch("api/load-data")
       .then((response) => {
@@ -32,9 +40,15 @@ export default function App() {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data:data}),
+      body: JSON.stringify({ data: data }),
     };
-    const response = fetch("api/save-data", requestOptions);
+    fetch("api/save-data", requestOptions).then((response)=> {
+      return response.json()
+    }).then((res) => {
+      
+      setMesssage(res.message)
+    });
+  
   };
 
   useEffect(() => {
@@ -46,7 +60,7 @@ export default function App() {
   // original data
   const updateObservation = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
-    setData((old) =>{
+    setData((old) => {
       let obs = old["observation"].map((row, index) => {
         if (index === rowIndex) {
           return {
@@ -55,18 +69,16 @@ export default function App() {
           };
         }
         return row;
-      })
+      });
       return {
         ...old,
-        "observation": obs
-      }
-    }
-     
-    );
+        observation: obs,
+      };
+    });
   };
   const updateSummary = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
-    setData((old) =>{
+    setData((old) => {
       let summary = old["summary"].map((row, index) => {
         if (index === rowIndex) {
           return {
@@ -75,14 +87,12 @@ export default function App() {
           };
         }
         return row;
-      })
+      });
       return {
         ...old,
-        "summary": summary
-      }
-    }
-     
-    );
+        summary: summary,
+      };
+    });
   };
 
   return (
@@ -97,7 +107,7 @@ export default function App() {
           <Flow />
         </FlowArea>
       </Row>
-      <button onClick={saveData}>Save</button>
+      <Button onClick={saveData}>Save Data</Button>{message}
       <ObservationTable
         updateMyData={updateObservation}
         data={data["observation"]}

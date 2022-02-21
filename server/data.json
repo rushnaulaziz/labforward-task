@@ -1,1 +1,1 @@
-{"data":{"observation":[{"testVolume":100,"dispense1":"033","dispense2":"033333333","dispense3":"022","dispense4":0}],"summary":[{"testVolume":100,"mean":"0","std":"033333333","accuracy":0,"precision":0}]}}
+{"data":{"observation":[{"testVolume":"1002","dispense1":"033","dispense2":"033333333","dispense3":"022","dispense4":0}],"summary":[{"testVolume":100,"mean":"0","std":"033333333","accuracy":0,"precision":"01"}]}}
