@@ -139,7 +139,7 @@ function Table({ columns, data, updateMyData }) {
     );
 }
 
-function ObservationTable(prop) {
+function ObservationTable(props) {
     const columns = React.useMemo(
         () => [
             {
@@ -171,38 +171,9 @@ function ObservationTable(prop) {
         []
     );
 
-    const [data, setData] = React.useState(() => {
-        return [{
-            "dispense1": 100,
+   
 
-            "dispense2": 0,
-
-            "dispense3": 0,
-
-            "dispense4": 0,
-
-            "testVolume": 0
-        }]
-    });
-
-    // When our cell renderer calls updateMyData, we'll use
-    // the rowIndex, columnId and new value to update the
-    // original data
-    const updateMyData = (rowIndex, columnId, value) => {
-        // We also turn on the flag to not reset the page
-        setData((old) =>
-            old.map((row, index) => {
-                if (index === rowIndex) {
-                    return {
-                        ...old[rowIndex],
-                        [columnId]: value
-                    };
-                }
-                return row;
-            })
-        );
-    };
-
+  
    
 
     // Let's add a data resetter/randomizer to help
@@ -212,8 +183,8 @@ function ObservationTable(prop) {
         <Styles>
             <Table
                 columns={columns}
-                data={data}
-                updateMyData={updateMyData}
+                data={props.data}
+                updateMyData={props.updateMyData}
                
             />
         </Styles>
