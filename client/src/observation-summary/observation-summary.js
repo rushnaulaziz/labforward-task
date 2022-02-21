@@ -1,3 +1,4 @@
+
 import React from "react";
 import styled from "styled-components";
 import Table from "../table/table";
@@ -41,32 +42,33 @@ const Styles = styled.div`
     padding: 0.5rem;
   }
 `;
-function ObservationTable(props) {
+function ObservationSummary(props) {
     
+
     const columns = React.useMemo(
         () => [
             {
-                Header: "Weight of water from step 6.3",
+                Header: "Mean, Std. Deviation, Accuracy and Precision",
                 columns: [
                     {
                         Header: "Test Volume",
                         accessor: "testVolume"
                     },
                     {
-                        Header: "Dispense - 1",
-                        accessor: "dispense1"
+                        Header: "Mean",
+                        accessor: "mean"
                     },
                     {
-                        Header: "Dispense - 2",
-                        accessor: "dispense2"
+                        Header: "St. Deviation ",
+                        accessor: "std"
                     },
                     {
-                        Header: "Dispense - 3",
-                        accessor: "dispense3"
+                        Header: "Accuracy (%)",
+                        accessor: "accuracy"
                     },
                     {
-                        Header: "Dispense - 4",
-                        accessor: "dispense4"
+                        Header: "Precision (%)",
+                        accessor: "precision"
                     }
                 ]
             }
@@ -84,7 +86,6 @@ function ObservationTable(props) {
 
     return (
         <Styles>
-           
             <Table
                 columns={columns}
                 data={props.data}
@@ -95,4 +96,4 @@ function ObservationTable(props) {
     );
 }
 
-export default ObservationTable;
+export default ObservationSummary;

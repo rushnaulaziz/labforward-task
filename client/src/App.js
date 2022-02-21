@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Container, Row, Col } from "react-bootstrap";
 import Flow from "./flowchart";
 import ObservationTable from "./observation-data/observation-table";
+import ObservationSummary from "./observation-summary/observation-summary";
 
 const ContainerDiv = styled(Container)`
   font-family: sans-serif;
@@ -11,11 +12,11 @@ const ContainerDiv = styled(Container)`
 
 const FlowArea = styled(Col)`
   width: 100%;
-  height: 65vh;
+  height: 55vh;
 `;
 
 export default function App() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({"observation":[], "summary": []});
   const fetchData = () => {
     fetch("api/load-data")
       .then((response) => {
@@ -43,18 +44,44 @@ export default function App() {
   // When our cell renderer calls updateMyData, we'll use
   // the rowIndex, columnId and new value to update the
   // original data
-  const updateMyData = (rowIndex, columnId, value) => {
+  const updateObservation = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
-    setData((old) =>
-      old.map((row, index) => {
+    setData((old) =>{
+      let obs = old["observation"].map((row, index) => {
         if (index === rowIndex) {
           return {
-            ...old[rowIndex],
+            ...old["observation"][rowIndex],
             [columnId]: value,
           };
         }
         return row;
       })
+      return {
+        ...old,
+        "observation": obs
+      }
+    }
+     
+    );
+  };
+  const updateSummary = (rowIndex, columnId, value) => {
+    // We also turn on the flag to not reset the page
+    setData((old) =>{
+      let summary = old["summary"].map((row, index) => {
+        if (index === rowIndex) {
+          return {
+            ...old["summary"][rowIndex],
+            [columnId]: value,
+          };
+        }
+        return row;
+      })
+      return {
+        ...old,
+        "summary": summary
+      }
+    }
+     
     );
   };
 
@@ -70,9 +97,15 @@ export default function App() {
           <Flow />
         </FlowArea>
       </Row>
+      <button onClick={saveData}>Save</button>
       <ObservationTable
-        updateMyData={updateMyData}
-        data={data}
+        updateMyData={updateObservation}
+        data={data["observation"]}
+        saveData={saveData}
+      />
+      <ObservationSummary
+        updateMyData={updateSummary}
+        data={data["summary"]}
         saveData={saveData}
       />
     </ContainerDiv>
