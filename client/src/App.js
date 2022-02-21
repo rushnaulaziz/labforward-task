@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Container, Row, Col } from "react-bootstrap";
 import Flow from "./flowchart";
 import ObservationTable from "./observation-data/observation-table";
-
 
 const ContainerDiv = styled(Container)`
   font-family: sans-serif;
@@ -16,33 +15,30 @@ const FlowArea = styled(Col)`
 `;
 
 export default function App() {
-
-
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
   const fetchData = () => {
-
     fetch("api/load-data")
-
-      .then(response => {
-
-        return response.json()
-
+      .then((response) => {
+        return response.json();
       })
 
-      .then(res => {
-        console.log(res.data)
-        setData(res.data)
-
-      })
-
-  }
+      .then((res) => {
+        console.log(res.data);
+        setData(res.data);
+      });
+  };
+  const saveData = () => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ data:data}),
+    };
+    const response = fetch("api/save-data", requestOptions);
+  };
 
   useEffect(() => {
-
-    fetchData()
-
-  }, [])
-
+    fetchData();
+  }, []);
 
   // When our cell renderer calls updateMyData, we'll use
   // the rowIndex, columnId and new value to update the
@@ -54,7 +50,7 @@ export default function App() {
         if (index === rowIndex) {
           return {
             ...old[rowIndex],
-            [columnId]: value
+            [columnId]: value,
           };
         }
         return row;
@@ -74,8 +70,11 @@ export default function App() {
           <Flow />
         </FlowArea>
       </Row>
-      <ObservationTable updateMyData={updateMyData} data={data} />
-
+      <ObservationTable
+        updateMyData={updateMyData}
+        data={data}
+        saveData={saveData}
+      />
     </ContainerDiv>
   );
 }

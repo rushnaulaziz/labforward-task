@@ -8,6 +8,7 @@ const Styles = styled.div`
   table {
     border-spacing: 0;
     border: 1px solid black;
+    width: 100vw
 
     tr {
       :last-child {
@@ -181,6 +182,7 @@ function ObservationTable(props) {
 
     return (
         <Styles>
+            <button onClick={props.saveData}>Save</button>
             <Table
                 columns={columns}
                 data={props.data}
